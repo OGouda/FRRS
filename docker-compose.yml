@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+
+  postgres:
+    build: ./postgres
+    container_name: FRRS_DB
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=toor
+    # networks:
+    #   - apinetwork
+    ports:
+      - 5432:5432
+      
+  frrs_api:
+    build: ./API
+    container_name: FRRS_API
+    #restart: unless-stopped
+    depends_on: 
+     - postgres
+    # links: 
+    #  - postgres:postgres
+    # networks:
+    #   - apinetwork
+    env_file: database.conf
+    ports:
+      - 5000:5000
+      
+  frrs_front:
+    build: ./Front
+    container_name: FRRS_Front
+    #restart: unless-stopped
+    depends_on: 
+     - frrs_api
+    # links: 
+    #  - frrs_api:frrs_api
+    # networks:
+    #   - apinetwork
+    env_file: API.conf
+    ports:
+      - 4000:4000
+
+# networks:
+#    apinetwork:
+#     driver: bridge
+# volumes:
+#   frrs_sys:
