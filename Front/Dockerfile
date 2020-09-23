@@ -1,6 +1,5 @@
-
 # FROM python:3.7.9-slim-stretch
-FROM frrs_base:latest
+FROM omargouda/frrs_base:latest
 
 WORKDIR usr/src/API
 COPY . ./
